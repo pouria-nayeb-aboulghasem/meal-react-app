@@ -1,6 +1,6 @@
 import type { Recipe, RecipesState } from "@/types";
 
-// 
+// list of actions on states
 type RecipesAction =
   | { type: "queryChanged"; query: string }
   | { type: "searchSubmitted" }
