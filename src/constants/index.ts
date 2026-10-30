@@ -1,0 +1,7 @@
+import {
+  API_BASE_URL,
+  VITE_SPOONACULAR_API_KEY,
+  API_ENDPOINTS,
+} from "./apiEndpoints";
+
+export { API_BASE_URL, VITE_SPOONACULAR_API_KEY, API_ENDPOINTS };
