@@ -1,9 +1,9 @@
-import RecipePagination from "@/components/RecipePagination";
+import { useRecipes } from "@/hooks";
 import Header from "@/features/Recipes/Header";
+import Search from "@/features/Recipes/Search";
 import HeaderStatus from "@/features/Recipes/HeaderStatus";
 import RecipeResults from "@/features/Recipes/RecipeResults";
-import Search from "@/features/Recipes/Search";
-import { useRecipes } from "@/hooks/useRecipes";
+import RecipePagination from "@/components/RecipePagination";
 
 function Recipes() {
   const {
