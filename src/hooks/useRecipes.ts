@@ -20,29 +20,32 @@ function useRecipes() {
   const [state, dispatch] = useReducer(recipesReducer, initialState);
 
   useEffect(() => {
-    let active = true;
     const controller = new AbortController();
 
-    dispatch({ type: "requestStarted" });
-    void getRecipes(
-      {
-        query: state.searchQuery || undefined,
-        number: PAGE_SIZE,
-        offset: state.page * PAGE_SIZE,
-      },
-      controller.signal,
-    )
-      .then((response) => {
-        if (active) {
-          dispatch({
-            type: "requestSucceeded",
-            recipes: response.results,
-            totalResults: response.totalResults,
-          });
-        }
-      })
-      .catch((error: unknown) => {
-        if (active && !controller.signal.aborted) {
+    async function fetchRecipes() {
+      try {
+        // loading active
+        dispatch({ type: "requestStarted" });
+
+        // send request to server
+        const response = await getRecipes(
+          {
+            query: state.searchQuery || undefined,
+            number: PAGE_SIZE,
+            offset: state.page * PAGE_SIZE,
+          },
+          controller.signal,
+        );
+
+        // request succeeded
+        dispatch({
+          type: "requestSucceeded",
+          recipes: response.results,
+          totalResults: response.totalResults,
+        });
+      } catch (error) {
+        // request failed
+        if (!controller.signal.aborted) {
           dispatch({
             type: "requestFailed",
             error:
@@ -51,14 +54,19 @@ function useRecipes() {
                 : "We couldn't load recipes. Please try again.",
           });
         }
-      });
+      }
+    }
 
+    // run fetch recipes
+    fetchRecipes();
+
+    // cleanup
     return () => {
-      active = false;
       controller.abort();
     };
   }, [state.page, state.requestVersion, state.searchQuery]);
 
+  // calculate total pages
   const totalPages = Math.ceil(state.totalResults / PAGE_SIZE);
 
   return {

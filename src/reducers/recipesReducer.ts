@@ -1,5 +1,6 @@
 import type { Recipe, RecipesState } from "@/types";
 
+// 
 type RecipesAction =
   | { type: "queryChanged"; query: string }
   | { type: "searchSubmitted" }
@@ -18,9 +19,10 @@ function recipesReducer(
       return { ...state, queryInput: action.query };
     case "searchSubmitted": {
       const searchQuery = state.queryInput.trim();
-      if (searchQuery === state.searchQuery && state.page === 0) {
+
+      if (searchQuery === state.searchQuery && state.page === 0)
         return { ...state, requestVersion: state.requestVersion + 1 };
-      }
+
       return { ...state, searchQuery, page: 0 };
     }
     case "pageChanged":
@@ -39,6 +41,8 @@ function recipesReducer(
       return { ...state, status: "error", error: action.error };
     case "retried":
       return { ...state, requestVersion: state.requestVersion + 1 };
+    default:
+      return state;
   }
 }
 
