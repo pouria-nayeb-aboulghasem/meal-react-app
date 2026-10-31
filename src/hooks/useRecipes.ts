@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
-import { getRecipes } from "@/services/mealService";
 import type { RecipesState } from "@/types";
+import { getRecipes } from "@/services";
 import { recipesReducer } from "@/reducers";
 
 const PAGE_SIZE = 12;
@@ -37,14 +37,14 @@ function useRecipes() {
           controller.signal,
         );
 
-        // request succeeded
+        // request succeeded: feed client-side states
         dispatch({
           type: "requestSucceeded",
           recipes: response.results,
           totalResults: response.totalResults,
         });
       } catch (error) {
-        // request failed
+        // request failed: feed error message
         if (!controller.signal.aborted) {
           dispatch({
             type: "requestFailed",

@@ -15,8 +15,10 @@ function recipesReducer(
   action: RecipesAction,
 ): RecipesState {
   switch (action.type) {
+    // fill search input
     case "queryChanged":
       return { ...state, queryInput: action.query };
+    // search
     case "searchSubmitted": {
       const searchQuery = state.queryInput.trim();
 
@@ -25,10 +27,13 @@ function recipesReducer(
 
       return { ...state, searchQuery, page: 0 };
     }
+    // pagination
     case "pageChanged":
       return { ...state, page: action.page };
+    // loading
     case "requestStarted":
       return { ...state, status: "loading", error: null };
+    // list and count
     case "requestSucceeded":
       return {
         ...state,
@@ -37,10 +42,13 @@ function recipesReducer(
         status: "success",
         error: null,
       };
+    // error
     case "requestFailed":
       return { ...state, status: "error", error: action.error };
+    // reload page
     case "retried":
       return { ...state, requestVersion: state.requestVersion + 1 };
+    // no touch
     default:
       return state;
   }

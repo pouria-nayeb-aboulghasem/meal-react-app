@@ -1,3 +1,3 @@
-import { getRecipes } from "./mealService";
+import { getRecipes } from "./recipeService";
 
 export { getRecipes };
